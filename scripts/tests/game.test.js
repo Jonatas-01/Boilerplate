@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { game, newGame, showScore, addTurn, lightsOn } = require("../game");
+const { game, newGame, showScore, addTurn, lightsOn, showTurns } = require("../game");
 
 // Opens html file into DOM
 beforeAll(() => {
@@ -30,6 +30,9 @@ describe("game object contains correct keys", () => {
     test("choices contain correct ids", () => {
         expect(game.choices).toEqual(["button1", "button2", "button3", "button4"]);
     });
+    test("turnNumber key exists", () => {
+        expect("turnNumber" in game).toBe(true);
+    });
 });
 
 // Check if the newGame function works correctly
@@ -52,9 +55,16 @@ describe("newGame works correctly", () => {
     });
     test("should display 0 for the element id of score", () => {
         expect(document.getElementById("score").innerText).toEqual(0)
+    });
+    test("expect data-listener to be true", () => {
+        const elements = document.getElementsByClassName("circle");
+        for (let element of elements){
+            expect(element.getAttribute("data-listener")).toEqual("true")
+        }
     })
 });
 
+// Check if all gameplay functions works correctly
 describe("gameplay works correctly", () => {
     beforeEach(() => {
         game.score = 0;
@@ -76,4 +86,10 @@ describe("gameplay works correctly", () => {
         lightsOn(game.currentGame[0]);
         expect(button.classList).toContain("light");
     });
+    test("showTurns should update game.turnNumber", () => {
+        game.turnNumber = 42;
+        showTurns();
+        expect(game.turnNumber).toBe(0);
+    });
 });
+
