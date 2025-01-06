@@ -35,6 +35,12 @@ describe("game object contains correct keys", () => {
     test("turnNumber key exists", () => {
         expect("turnNumber" in game).toBe(true);
     });
+    test("lastButton key exist", () =>{
+        expect("lastButton" in game).toBe(true);
+    });
+    test("turnInProgress key exist", () =>{
+        expect("turnInProgress" in game).toBe(true);
+    });
 });
 
 // Check if the newGame function works correctly
@@ -103,5 +109,15 @@ describe("gameplay works correctly", () => {
         playerTurn();
         expect(window.alert).toBeCalledWith("Wrong move!");
     });
+    test("turnInProgress should be true", () => {
+        showTurns();
+        expect(game.turnInProgress).toBe(true);
+    });
+    test("clicling during computer sequence should fail", () => {
+        showTurns();
+        game.lastButton = "";
+        document.getElementById("button2").click();
+        expect(game.lastButton).toEqual("");
+    })
 });
 
